@@ -1,6 +1,19 @@
-@import 'maplibre-gl/dist/maplibre-gl.css';
+@import "maplibre-gl/dist/maplibre-gl.css";
 
 /* Add application styles & imports to this file! */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.maplibregl-popup-content {
+  @apply p-0 rounded bg-clip-border text-xs;
+  .properties > p {
+    @apply px-3 py-1 flex justify-between items-center;
+    span:nth-child(2) {
+      @apply font-bold pl-3;
+    }
+  }
+  .maplibregl-popup-close-button {
+    @apply scale-110 p-1;
+  }
+}

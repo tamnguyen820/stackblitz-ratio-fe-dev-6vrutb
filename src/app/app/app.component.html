@@ -5,7 +5,95 @@
   "
   [center]="[-79.3, 43.7]"
   [doubleClickZoom]="false"
-  [zoom]="[9]"
-  [antialias]="true" [logoPosition]="'bottom-right'"
+  [zoom]="[9.5]"
+  [antialias]="true"
+  [preserveDrawingBuffer]="true"
+  [logoPosition]="'bottom-right'"
+  [cursorStyle]="cursorStyle"
+  (mapClick)="onMapClick()"
 >
+  <mgl-control position="top-left">
+    <div class="bg-white p-3 rounded shadow-lg text-xs">
+      <p>
+        Min Income:
+        <span class="font-bold">{{ incomeStats.minIncome | currency }}</span>
+      </p>
+      <p>
+        Max Income:
+        <span class="font-bold">{{ incomeStats.maxIncome | currency }}</span>
+      </p>
+      <p>
+        Average Income:
+        <span class="font-bold">{{
+          incomeStats.averageIncome | currency
+        }}</span>
+      </p>
+    </div>
+  </mgl-control>
+  <mgl-geojson-source
+    id="toronto-source"
+    [data]="geoJSONData"
+  ></mgl-geojson-source>
+  <mgl-layer
+    id="toronto-layer"
+    type="fill"
+    source="toronto-source"
+    (layerMouseEnter)="cursorStyle = 'pointer'"
+    (layerMouseLeave)="cursorStyle = ''"
+    (layerClick)="onLayerClick($event)"
+    [paint]="{
+      'fill-color': [
+        'interpolate',
+        ['linear'],
+        ['get', 'Total income: Average amount ($)'],
+        0,
+        'blue',
+        100000,
+        'red'
+      ],
+      'fill-opacity': 0.7
+    }"
+  >
+  </mgl-layer>
+  <mgl-popup
+    *ngIf="popupLocation && selectedPointProperties"
+    [lngLat]="popupLocation"
+    [closeOnClick]="false"
+    [maxWidth]="'500'"
+  >
+    <div
+      class="bg-[#f5defa] p-3 rounded-t flex items-center gap-2"
+      id="area-name-field-popup"
+      [style.background-color]="areaNameFieldPopupColor"
+    >
+      <div
+        class="rounded border-black border-[1px] bg-[#d47de8] size-[14px]"
+        id="area-fill-indicator-popup"
+        [style.background-color]="areaTrueFillPopupColor"
+      ></div>
+      <div class="text-sm font-bold">
+        {{ selectedPointProperties["AREA_NAME"] }}
+      </div>
+    </div>
+    <div class="py-1 properties">
+      <p>
+        <span>Final 2016 demographics table_Average household size</span>
+        <span>{{
+          selectedPointProperties[
+            "Final 2016 demographics table_Average household size"
+          ]
+        }}</span>
+      </p>
+      <p>
+        <span>Population 2016</span>
+        <span>{{ selectedPointProperties["Population 2016"] }}</span>
+      </p>
+      <p>
+        <span>Total income: Average amount ($)</span>
+        <span>{{
+          selectedPointProperties["Total income: Average amount ($)"] | currency
+        }}</span>
+      </p>
+    </div>
+  </mgl-popup>
 </mgl-map>

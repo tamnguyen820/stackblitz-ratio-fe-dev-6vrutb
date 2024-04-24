@@ -2,15 +2,15 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "useDefineForClassFields": false,
-    "outDir": "./out-tsc/app",
-    "types": []
+    "outDir": "./out-tsc/spec",
+    "types": [
+      "jest" // 1
+    ],
+    "esModuleInterop": true, // 2
+    "emitDecoratorMetadata": true // 3
   },
-  "files": [
-    "src/main.ts"
-  ],
   "include": [
+    "src/**/*.spec.ts",
     "src/**/*.d.ts"
-  ],
+  ]
 }

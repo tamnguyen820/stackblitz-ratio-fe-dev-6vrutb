@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { data } from '../data/data';
+import { Injectable } from "@angular/core";
+import { data } from "../data/data";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class DataRetrievalService {
   constructor() {}
-  public retrieveGeoJSON() {
-    return data;
+  public retrieveGeoJSON(): GeoJSON.FeatureCollection {
+    return data as GeoJSON.FeatureCollection;
   }
 }
